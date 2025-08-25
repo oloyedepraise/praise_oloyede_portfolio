@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Praise Oloyede — Portfolio</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #012025;
+      --bg-2: #01323a;
+      --primary: #13D2FF; /* keeping original palette as requested */
+      --white: #ffffff;
+      --muted: #b9d8df;
+      --card: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.06);
+      --radius: 14px;
+      --container: 1200px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background: linear-gradient(180deg, #021b1e 0%, var(--bg) 40%);
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.6;
+    }
+
+    /* Anchor offset so sticky header doesn't cover section titles */
+    section{padding:72px 0; scroll-margin-top: 88px}
+
+    /* Container utility */
+    .container{max-width:var(--container); margin:0 auto; padding:0 20px}
+
+    /* NAV */
+    header.site-head{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(1,32,37,0.65), rgba(1,32,37,0.55));
+      border-bottom:1px solid var(--glass-border);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; height:72px; max-width:var(--container); margin:0 auto; padding:0 20px; position:relative}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; color:var(--primary); letter-spacing:.25px}
+    .brand .dot{width:12px;height:12px;border-radius:999px;background:var(--primary); box-shadow:0 8px 30px rgba(19,210,255,0.18)}
+    nav.main-nav ul{display:flex; gap:18px; list-style:none; align-items:center}
+    nav.main-nav a{color:var(--muted); font-weight:600; padding:8px 10px; border-radius:8px; transition:color .18s, background .18s}
+    nav.main-nav a:hover{color:var(--white); background: rgba(255,255,255,0.02)}
+
+    /* Mobile menu toggle */
+    .menu-toggle{display:none; background:transparent; border:none; color:var(--primary); font-size:1.5rem; line-height:1; padding:8px 10px; border-radius:8px; cursor:pointer}
+    .menu-toggle:focus-visible{outline:2px solid var(--primary)}
+
+    /* Mobile dropdown styles */
+    @media(max-width:720px){
+      nav.main-nav ul{display:none; flex-direction:column; gap:12px; position:absolute; right:14px; top:64px; width:min(220px, 90vw); background:rgba(1,32,37,0.96); border:1px solid var(--glass-border); border-radius:12px; padding:12px}
+      nav.main-nav.open ul{display:flex}
+      .menu-toggle{display:block}
+    }
+
+    /* HERO */
+    .hero{min-height:88vh; display:flex; align-items:center; padding:48px 0}
+    .hero-grid{display:grid; grid-template-columns:1fr 480px; gap:40px; align-items:center; width:100%; max-width:var(--container); margin:0 auto; padding:0 20px}
+    .kicker{color:var(--muted); text-transform:uppercase; letter-spacing:.24rem; font-weight:700; font-size:.78rem}
+    .hero h1{font-size:clamp(2rem,5vw,3.2rem); line-height:1.02; margin:.5rem 0; color:var(--primary)}
+    .hero p{color:#d7f2f9; max-width:58ch}
+    .cta{margin-top:18px; display:flex; gap:12px; flex-wrap:wrap}
+    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; border-radius:999px; font-weight:700; cursor:pointer; transition:transform .18s ease}
+    .btn-primary{background:var(--primary); color:#012025}
+    .btn-primary:hover{transform:translateY(-3px)}
+    .btn-ghost{border:1.5px solid var(--primary); color:var(--primary); background:transparent}
+    .hero-visual{justify-self:end}
+    .mock{border-radius:20px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.55)}
+    .mock img{display:block; width:100%; height:100%; object-fit:cover}
+
+    /* Sections base (moved earlier) */
+    h2.section-title{color:var(--primary); font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:12px}
+    p.lead{color:#cfeff6; margin-bottom:20px; max-width:70ch}
+
+    /* ABOUT */
+    .about{max-width:var(--container); margin:0 auto; padding:36px 20px; display:grid; grid-template-columns: 1fr 420px; gap:30px; align-items:center}
+    .about-card{background:var(--card); border:1px solid var(--glass-border); padding:28px; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,.45)}
+    .about-avatar{width:100%; height:100%; border-radius:16px; overflow:hidden; border:4px solid var(--primary)}
+    .skills{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .skill-chip{background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:999px; color:#dff9ff; font-weight:700; border:1px solid rgba(19,210,255,0.08)}
+
+    /* SERVICES */
+    .services-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:18px}
+    .service{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:22px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); text-align:center; transition:transform .25s}
+    .service:hover{transform:translateY(-8px); box-shadow:0 18px 60px rgba(0,0,0,0.55)}
+    .service .icon{width:56px;height:56px;border-radius:12px; display:grid; place-items:center; margin:0 auto 12px; background: radial-gradient(120px 80px at 10% 20%, rgba(19,210,255,.2), rgba(19,210,255,.06)); color:var(--primary); font-size:1.2rem; border:1px solid rgba(19,210,255,.14)}
+
+    /* TESTIMONIALS */
+    .testimonials{background:linear-gradient(180deg, rgba(1,32,37,0.15), transparent); padding:46px 0}
+    .test-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; max-width:var(--container); margin:0 auto; padding:0 20px}
+    .testimonial{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); padding:20px 18px; border-radius:12px; min-height:160px; display:flex; flex-direction:column; justify-content:space-between; transition:transform .25s}
+    .testimonial:hover{transform:translateY(-6px)}
+    .quote{color:#d9f8ff; font-style:italic; margin-bottom:12px}
+    .client{display:flex; gap:12px; align-items:center}
+    .client img{width:48px; height:48px; border-radius:999px; object-fit:cover; border:2px solid rgba(255,255,255,0.06)}
+    .client-info{font-weight:700; color:#e8fbff}
+    .client-role{font-size:.85rem; color:var(--muted); font-weight:600}
+
+    .client-logos{display:flex; gap:12px; align-items:center; justify-content:center; margin-top:18px; flex-wrap:wrap}
+    .client-logos img{height:34px; opacity:.95; filter:grayscale(.1); border-radius:6px}
+
+    /* PORTFOLIO */
+    .portfolio { padding-top:36px }
+    .filters{display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 20px}
+    .filters button{background:transparent; border:1.5px solid rgba(255,255,255,0.04); color:var(--muted); padding:10px 14px; border-radius:999px; cursor:pointer; transition:all .18s; touch-action:manipulation}
+    .filters button.active{background:var(--primary); color:#012025; border-color:var(--primary)}
+    .portfolio-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .tile{position:relative; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.04); background:#021b1f}
+    .tile img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s}
+    .tile:hover img{transform:scale(1.05)}
+    .tile .meta{position:absolute; left:14px; bottom:14px; right:14px; color:#fff; display:flex; align-items:center; justify-content:space-between}
+    .tag{background:rgba(19,210,255,0.12); color:#caf6ff; padding:6px 10px; border-radius:999px; font-weight:700; border:1px solid rgba(19,210,255,0.25)}
+
+    /* CONTACT */
+    .contact .card{background:var(--card); border:1px solid var(--glass-border); padding:20px; border-radius:12px; max-width:900px; margin:0 auto}
+    .form-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    input, textarea{width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--white)}
+    button.cta{background:var(--primary); color:#012025; border:none; padding:12px 18px; border-radius:8px; cursor:pointer; font-weight:700}
+    button.cta:active{transform:translateY(1px)}
+
+    /* FOOTER */
+    footer{padding:28px 0; border-top:1px solid rgba(255,255,255,0.03); text-align:center; color:var(--muted)}
+
+    /* Reveal animation utility */
+    .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1; transform:none}
+
+    /* Responsive refinements */
+    @media(max-width:1024px){
+      .hero-grid{grid-template-columns:1fr 380px}
+      .test-grid{grid-template-columns:repeat(2,1fr)}
+      .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+      .about{grid-template-columns:1fr 360px}
+    }
+    @media(max-width:720px){
+      .nav-inner{padding:0 14px}
+      nav.main-nav ul{ /* base hidden moved to mobile block above */ }
+      .hero-grid{grid-template-columns:1fr; text-align:center}
+      .hero-visual{justify-self:center}
+      .cta{justify-content:center}
+      .cta .btn{width:100%; max-width:260px; justify-content:center}
+      .about{grid-template-columns:1fr; gap:16px}
+      .test-grid{grid-template-columns:1fr}
+      .portfolio-grid{grid-template-columns:1fr}
+      .about img{width:100%}
+      .form-row{grid-template-columns:1fr}
+    }
+
+    /* Extra small phones */
+    @media(max-width:380px){
+      .btn{padding:.74rem 1rem}
+      .filters{gap:8px}
+      .filters button{padding:8px 12px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="site-head">
+    <div class="nav-inner">
+      <div class="brand"><span class="dot"></span> Praise Oloyede</div>
+      <nav class="main-nav" aria-label="Primary Navigation">
+        <ul id="primary-nav">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Menu" aria-controls="primary-nav" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="home" class="hero container">
+    <div class="hero-grid">
+      <div data-reveal>
+        <div class="kicker">Award-winning Designer</div>
+        <h1>Design that <span style="color:var(--white)">connects</span> and converts</h1>
+        <p class="lead">I build premium brand systems, digital experiences and campaign visuals for companies that want to stand out. Strategy-led, craft-driven.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#portfolio">See Work</a>
+          <a class="btn btn-ghost" href="#contact">Contact Me</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-reveal>
+        <div class="mock">
+          <!-- Keeping your original image path -->
+          <img src="C:\Users\user\Desktop\porftfoil\20250828_142036.jpg" alt="Showcase">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ABOUT -->
+  <section id="about" class="about container">
+    <div class="about-card reveal" data-reveal>
+      <h2 class="section-title">About Me</h2>
+      <p>My name is Praise Oloyede, and I’m a graphic designer who enjoys creating designs that are clear, simple, and meaningful. I focus on making work that not only looks good but also communicates the right message.
+
+Over time, I’ve worked on different kinds of projects — from logos and branding to digital content — and each one has helped me grow and improve my craft. </p>
+
+      <div class="skills" style="margin-top:18px">
+        <span class="skill-chip">Brand Strategy</span>
+        <span class="skill-chip">Art Direction</span>
+        <span class="skill-chip">Figma & Prototyping</span>
+        <span class="skill-chip">Motion Basics</span>
+        <span class="skill-chip">Print & Packaging</span>
+      </div>
+    </div>
+
+    <div class="about-avatar" data-reveal>
+      <div class="about-avatar about-img about-card" style="padding:0; overflow:hidden">
+        <!-- Keeping your original image path -->
+        <img src="C:\Users\user\Desktop\porftfoil\20250828_233112-Recovered.png" alt="Praise Oloyede" style="width:100%; display:block;">
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="container">
+    <h2 class="section-title">Services</h2>
+    <p class="lead">Full-service creative support — from identity systems to product UI and social campaigns.</p>
+
+    <div class="services-grid" data-reveal>
+      <div class="service">
+        <div class="icon">🎨</div>
+        <h3>Brand Identity</h3>
+        <p>Logos, guidelines, applications and rollout assets for consistent brand expression.</p>
+      </div>
+      <div class="service">
+        <div class="icon">💻</div>
+        <h3>UI / UX</h3>
+        <p>High-fidelity interfaces, components and prototypes for web & mobile.</p>
+      </div>
+      <div class="service">
+        <div class="icon">📱</div>
+        <h3>Social & Digital</h3>
+        <p>Campaign visuals, ads and social kits focused on engagement and conversions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:18px" data-reveal>
+        <h2 class="section-title">What Clients Say</h2>
+        <p class="lead">Real feedback from clients who trusted the process and got big results.</p>
+      </div>
+
+      <div class="test-grid" data-reveal>
+        <div class="testimonial">
+          <div class="quote">“Praise took our brand from bland to unforgettable. The new identity helped increase conversions and gave our team a confident voice.”</div>
+          <div class="client">
+            <img src="C:\Users\user\Desktop\porftfoil\person.png" alt="Client avatar">
+            <div>
+              <div class="client-info">Emmanuel Olusegun</div>
+              <div class="client-role">CEO — Vincevad Limited</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="quote">“The social campaign exceeded expectations — CTRs and engagement skyrocketed. Clear strategy and stunning creative.”</div>
+          <div class="client">
+            <img src="C:\Users\user\Desktop\porftfoil\person.png" alt="Client avatar">
+            <div>
+              <div class="client-info">Mark Wilson</div>
+              <div class="client-role">Marketing Lead — Pulse</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="quote">“Fast, professional, and deeply thoughtful. The product UI shipped ahead of schedule and looks incredible.”</div>
+          <div class="client">
+            <img src="C:\Users\user\Desktop\porftfoil\person.png" alt="Client avatar">
+            <div>
+              <div class="client-info">Obasi Hope</div>
+              <div class="client-role">CEO — Proveede</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="client-logos" data-reveal>
+        <!-- placeholder client logos -->
+        <img src="C:\Users\user\Desktop\porftfoil\20250731_132812.jpg" alt="Client logo">
+        <img src="C:\Users\user\Desktop\porftfoil\12355233.jpg" alt="Client logo">
+        <img src="C:\Users\user\Desktop\porftfoil\427195940.jpg" alt="Client logo">
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="container">
+    <h2 class="section-title">Portfolio</h2>
+    <p class="lead">Explore my portfolio showcasing a variety of creative works — from church designs to logos, social media graphics, product visuals, UI/UX, and thumbnails.</p>
+
+    <div class="filters" id="filters" data-reveal>
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="church">Church Designs</button>
+      <button data-filter="logo">Logo Designs</button>
+      <button data-filter="social">Social Media</button>
+      <button data-filter="product">Product Design</button>
+      <button data-filter="uiux">UI/UX</button>
+      <button data-filter="Thumbnail">Thumbnail Designs</button>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid" data-reveal>
+      <!-- Church (5) -->
+      <div class="tile church"><img src="C:\Users\user\Desktop\porftfoil\New folder\1937746163.jpg" alt="Church"></div>
+      <div class="tile church"><img src="C:\Users\user\Desktop\porftfoil\New folder\78319918.jpg" alt="Church"></div>
+      <div class="tile church"><img src="C:\Users\user\Desktop\porftfoil\New folder\-1227419343.jpg" alt="Church"></div>
+      <div class="tile church"><img src="C:\Users\user\Desktop\porftfoil\New folder\-1316138861.jpg" alt="Church"></div>
+      <div class="tile church"><img src="C:\Users\user\Desktop\porftfoil\New folder\-463010886.jpg" alt="Church"></div>
+
+      <!-- Logos (many) -->
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (21).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\20250828_112505.jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (2).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (3).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (7).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (17).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (18).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (19).jpg" alt="Logo"></div>
+      <div class="tile logo"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (20).jpg" alt="Logo"></div>
+
+      <!-- Social Media (6) -->
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\-540601985.jpg" alt="Social"></div>
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\-800605971.jpg" alt="Social"></div>
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\442357456.jpg" alt="Social"></div>
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\1715235577.jpg" alt="Social"></div>
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\1174792527.jpg" alt="Social"></div>
+      <div class="tile social"><img src="C:\Users\user\Desktop\porftfoil\New folder\1136470963.jpg" alt="Social"></div>
+
+      <!-- Product Design (7) -->
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (23).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (8).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (25).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (32).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (35).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (40).jpg" alt="product"></div>
+      <div class="tile product"><img src="C:\Users\user\Desktop\porftfoil\Image_fx (42).jpg" alt="product"></div>
+
+      <!-- UI/UX (8+) -->
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\466781423.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\-143571071.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\193528761.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\2146079741.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\361520710.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\2068036000.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\-1075572841.jpg" alt="UIUX"></div>
+      <div class="tile uiux"><img src="C:\Users\user\Desktop\porftfoil\uiux\-1374331342.jpg" alt="UIUX"></div>
+
+      <!-- Thumbnail Designs (more) -->
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\2116018389.jpg"alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\713193515.jpg" alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\maxresdefault (12).jpg" alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\IMG-20250607-WA0048-01.png" alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\543881920.jpg" alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\20250819_133447-01.jpg" alt="Thumbnail Designs"></div>
+      <div class="tile Thumbnail"><img src="C:\Users\user\Desktop\porftfoil\thumbnails\20250721_085258.jpg" alt="Thumbnail Designs"></div>
+    </div>
+      </section>
+
+<!-- CONTACT -->
+<section id="contact" class="container">
+  <h2 class="section-title">Contact</h2>
+  <p class="lead">Tell me about your project — I’ll respond with timelines, scope and an outline.</p>
+
+  <div class="contact card" style="padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); background:#001216;">
+    <form id="contact-form">
+      
+      <div class="form-row" style="display:flex; gap:12px; flex-wrap:wrap;">
+        <input type="text" name="name" placeholder="Full name" required style="
+          flex:1; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); 
+          background:transparent; color:#fff; font-family:'Poppins', sans-serif;
+          transition:border 0.3s ease, box-shadow 0.3s ease;
+        " 
+        onfocus="this.style.border='1px solid #25C8FF'; this.style.boxShadow='0 0 8px rgba(37,200,255,0.4)';"
+        onblur="this.style.border='1px solid rgba(255,255,255,0.08)'; this.style.boxShadow='none';"
+        />
+        
+        <input type="email" name="email" placeholder="Email address" required style="
+          flex:1; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); 
+          background:transparent; color:#fff; font-family:'Poppins', sans-serif;
+          transition:border 0.3s ease, box-shadow 0.3s ease;
+        " 
+        onfocus="this.style.border='1px solid #25C8FF'; this.style.boxShadow='0 0 8px rgba(37,200,255,0.4)';"
+        onblur="this.style.border='1px solid rgba(255,255,255,0.08)'; this.style.boxShadow='none';"
+        />
+      </div>
+      
+      <div style="margin-top:10px">
+        <textarea 
+          name="message" 
+          rows="6" 
+          placeholder="Project brief or message" 
+          required 
+          style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); 
+          background:transparent; color:#fff; font-family:'Poppins', sans-serif;
+          transition:border 0.3s ease, box-shadow 0.3s ease;"
+          onfocus="this.style.border='1px solid #25C8FF'; this.style.boxShadow='0 0 8px rgba(37,200,255,0.4)';"
+          onblur="this.style.border='1px solid rgba(255,255,255,0.08)'; this.style.boxShadow='none';"
+        ></textarea>
+      </div>
+      
+      <div style="margin-top:12px; text-align:right">
+        <button class="cta" type="submit" style="
+          padding:12px 22px; 
+          border:none; 
+          background:#25C8FF; 
+          color:#001216; 
+          border-radius:10px; 
+          cursor:pointer;
+          font-weight:600;
+          font-family:'Poppins', sans-serif;
+          letter-spacing:0.5px;
+          box-shadow:0 6px 18px rgba(37,200,255,0.45);
+          transition: all 0.3s ease;
+        " 
+        onmouseover="this.style.transform='scale(1.07)'; this.style.boxShadow='0 8px 20px rgba(37,200,255,0.6)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 18px rgba(37,200,255,0.45)';"
+        >Send Message</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div id="success-modal" style="
+  display:none; 
+  position:fixed; 
+  top:0; left:0; 
+  width:100%; height:100%; 
+  background:rgba(0,18,22,0.9); 
+  backdrop-filter: blur(6px);
+  z-index:9999; 
+  align-items:center; 
+  justify-content:center;
+  opacity:0; 
+  transition: opacity 0.4s ease;
+  font-family:'Poppins', sans-serif;
+">
+  <div style="
+    background:#001216; 
+    padding:30px; 
+    border-radius:18px; 
+    max-width:420px; 
+    width:90%; 
+    text-align:center; 
+    box-shadow:0 12px 40px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    opacity:0;
+    transition: all 0.35s ease;
+    color:#fff;
+    border:1px solid rgba(37,200,255,0.3);
+  " id="modal-content">
+    <h3 style="margin-bottom:10px; font-size:1.4rem; font-weight:600; color:#25C8FF;">✅ Message Sent!</h3>
+    <p style="color:rgba(255,255,255,0.75); font-size:0.95rem; line-height:1.5;">
+      Thank you for reaching out. I’ll get back to you shortly.
+    </p>
+    <button onclick="closeModal()" style="
+      margin-top:18px; 
+      padding:12px 22px; 
+      border:none; 
+      background:#25C8FF; 
+      color:#001216; 
+      border-radius:10px; 
+      cursor:pointer;
+      font-weight:600;
+      font-size:0.95rem;
+      letter-spacing:0.5px;
+      box-shadow:0 6px 18px rgba(37,200,255,0.45);
+      transition: all 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.07)'; this.style.boxShadow='0 8px 20px rgba(37,200,255,0.6)';"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 18px rgba(37,200,255,0.45)';"
+    >Close</button>
+  </div>
+</div>
+
+<script>
+  // Contact form -> Formspree + success modal
+  const form = document.getElementById("contact-form");
+  const modal = document.getElementById("success-modal");
+  const modalContent = document.getElementById("modal-content");
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault(); // prevent normal form submit
+
+    let formData = new FormData(form);
+
+    try {
+      let response = await fetch("https://formspree.io/f/xgvloayo", {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        modal.style.display = "flex";   
+        setTimeout(() => {
+          modal.style.opacity = "1";
+          modalContent.style.opacity = "1";
+          modalContent.style.transform = "scale(1)";
+        }, 50); // delay for transition
+        form.reset();                   
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Error submitting form.");
+    }
+  });
+
+  function closeModal() {
+    modal.style.opacity = "0";
+    modalContent.style.opacity = "0";
+    modalContent.style.transform = "scale(0.9)";
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 400); // match transition duration
+  }
+</script>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+      <div style="display:flex; gap:12px; align-items:center"><div class="dot" style="width:12px;height:12px;border-radius:999px;background:var(--primary)"></div><strong>Praise Oloyede</strong></div>
+      <div style="color:var(--muted)">© 2025 — Built with craft & strategy</div>
+    </div>
+  </footer>
+
+  <!-- Reveal on scroll + filter + mobile nav toggle -->
+  <script>
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('[data-reveal], .reveal');
+    const revealer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealer.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.12});
+    revealEls.forEach(el => revealer.observe(el));
+
+    // Portfolio filter
+    const filterBtns = document.querySelectorAll('.filters button');
+    const tiles = document.querySelectorAll('.portfolio-grid .tile');
+
+    function setActive(btn){
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        setActive(btn);
+        if(filter === 'all') {
+          tiles.forEach(t => t.style.display = 'block');
+        } else {
+          tiles.forEach(t => {
+            t.style.display = t.classList.contains(filter) ? 'block' : 'none';
+          });
+        }
+        window.scrollTo({top: document.querySelector('#portfolio').offsetTop - 80, behavior:'smooth'});
+      });
+    });
+ // Mobile nav toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('nav.main-nav');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mainNav.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('nav.main-nav a').forEach(a => a.addEventListener('click', () => {
+      if (mainNav.classList.contains('open')) {
+        mainNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    }));
+  </script>
+</body>
+</html>
